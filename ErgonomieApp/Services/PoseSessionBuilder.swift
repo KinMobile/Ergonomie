@@ -12,7 +12,27 @@ final class PoseSessionBuilder {
         frames.append(frame)
     }
 
-    func build(with assessments: [JointAssessment], metrics: [PoseMetric]) -> PoseSession {
-        PoseSession(id: UUID(), metadata: metadata, frames: frames, assessments: assessments, metrics: metrics)
+    var frameCount: Int {
+        frames.count
+    }
+
+    var sessionDuration: TimeInterval {
+        guard let first = frames.first?.timestamp, let last = frames.last?.timestamp else { return 0 }
+        return max(0, last.timeIntervalSince(first))
+    }
+
+    var recordedFrames: [PoseFrame] {
+        frames
+    }
+
+    func build(with assessments: [JointAssessment], metrics: [PoseMetric], summary: SessionSummary) -> PoseSession {
+        PoseSession(
+            id: UUID(),
+            metadata: metadata,
+            frames: frames,
+            assessments: assessments,
+            metrics: metrics,
+            summary: summary
+        )
     }
 }

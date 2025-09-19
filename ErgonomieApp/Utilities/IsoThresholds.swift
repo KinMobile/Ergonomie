@@ -49,4 +49,8 @@ struct IsoThresholds: Codable {
 
         return JointAssessment(jointType: joint, riskLevel: riskLevel, summary: summary, recommendations: recommendations)
     }
+
+    func threshold(for joint: JointType) -> Threshold? {
+        thresholds[joint]
+    }
 }

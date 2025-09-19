@@ -62,7 +62,7 @@ struct LiveMetrics {
     }
 
     var criticalPostureDescription: String {
-        pose.mostCriticalJoint?.rawValue ?? "Stable"
+        pose.mostCriticalJoint?.localizedName ?? "Stable"
     }
 
     var isoScoreDescription: String {

@@ -15,18 +15,26 @@ final class CaptureService: NSObject, ObservableObject {
         sampleBufferSubject.eraseToAnyPublisher()
     }
 
-    func requestAuthorizationIfNeeded() {
+    func requestAuthorizationIfNeeded(completion: @escaping (Bool) -> Void) {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            break
+            DispatchQueue.main.async {
+                completion(true)
+            }
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if !granted {
                     print("Accès caméra refusé")
                 }
+                DispatchQueue.main.async {
+                    completion(granted)
+                }
             }
         default:
-            print("Autorisations caméra insuffisantes")
+            DispatchQueue.main.async {
+                print("Autorisations caméra insuffisantes")
+                completion(false)
+            }
         }
     }
 
