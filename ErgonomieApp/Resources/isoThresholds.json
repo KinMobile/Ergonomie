@@ -1,0 +1,11 @@
+{
+  "leftShoulder": { "warning": 60, "critical": 80, "maxDuration": 2 },
+  "rightShoulder": { "warning": 60, "critical": 80, "maxDuration": 2 },
+  "leftElbow": { "warning": 120, "critical": 140, "maxDuration": 4 },
+  "rightElbow": { "warning": 120, "critical": 140, "maxDuration": 4 },
+  "torso": { "warning": 20, "critical": 45, "maxDuration": 4 },
+  "leftHip": { "warning": 60, "critical": 80, "maxDuration": 3 },
+  "rightHip": { "warning": 60, "critical": 80, "maxDuration": 3 },
+  "leftKnee": { "warning": 90, "critical": 120, "maxDuration": 4 },
+  "rightKnee": { "warning": 90, "critical": 120, "maxDuration": 4 }
+}
