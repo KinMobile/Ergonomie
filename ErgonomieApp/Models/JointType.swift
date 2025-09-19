@@ -20,4 +20,39 @@ enum JointType: String, CaseIterable, Codable, Comparable {
     static func < (lhs: JointType, rhs: JointType) -> Bool {
         lhs.rawValue < rhs.rawValue
     }
+
+    var localizedName: String {
+        switch self {
+        case .head:
+            return "Tête"
+        case .neck:
+            return "Cou"
+        case .leftShoulder:
+            return "Épaule gauche"
+        case .rightShoulder:
+            return "Épaule droite"
+        case .leftElbow:
+            return "Coude gauche"
+        case .rightElbow:
+            return "Coude droit"
+        case .leftWrist:
+            return "Poignet gauche"
+        case .rightWrist:
+            return "Poignet droit"
+        case .torso:
+            return "Torse"
+        case .leftHip:
+            return "Hanche gauche"
+        case .rightHip:
+            return "Hanche droite"
+        case .leftKnee:
+            return "Genou gauche"
+        case .rightKnee:
+            return "Genou droit"
+        case .leftAnkle:
+            return "Cheville gauche"
+        case .rightAnkle:
+            return "Cheville droite"
+        }
+    }
 }

@@ -11,7 +11,9 @@ struct PoseOverlayView: View {
                         if let normalized = pose.jointPositions[joint] {
                             let position = CGPoint(x: normalized.x * geometry.size.width,
                                                    y: (1 - normalized.y) * geometry.size.height)
-                            JointView(name: joint.rawValue, position: position)
+                            JointView(joint: joint,
+                                      angle: pose.jointAngles[joint],
+                                      position: position)
                         }
                     }
 
@@ -40,7 +42,8 @@ struct PoseOverlayView: View {
 }
 
 private struct JointView: View {
-    let name: String
+    let joint: JointType
+    let angle: Double?
     let position: CGPoint
 
     var body: some View {
@@ -48,12 +51,20 @@ private struct JointView: View {
             Circle()
                 .fill(Color.accentColor)
                 .frame(width: 10, height: 10)
-            Text(name)
-                .font(.caption2)
-                .foregroundColor(.white)
-                .padding(4)
-                .background(Color.black.opacity(0.6))
-                .clipShape(Capsule())
+
+            VStack(spacing: 2) {
+                Text(joint.localizedName)
+                    .font(.caption2.weight(.semibold))
+                if let angle {
+                    Text("\(angle, specifier: "%.0f")°")
+                        .font(.caption2)
+                }
+            }
+            .padding(.horizontal, 6)
+            .padding(.vertical, 4)
+            .background(Color.black.opacity(0.55))
+            .clipShape(Capsule())
+            .foregroundColor(.white)
         }
         .position(position)
     }
