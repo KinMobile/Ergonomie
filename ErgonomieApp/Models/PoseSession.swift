@@ -212,6 +212,21 @@ struct SessionSummary: Codable {
     }
 }
 
+extension SessionSummary.JointSummary.IsoStatus {
+    var severityRank: Int {
+        switch self {
+        case .critical:
+            return 3
+        case .attention:
+            return 2
+        case .compliant:
+            return 1
+        case .unknown:
+            return 0
+        }
+    }
+}
+
 struct JointAssessment: Codable {
     enum RiskLevel: String, Codable {
         case low
