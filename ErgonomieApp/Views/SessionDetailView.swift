@@ -10,6 +10,10 @@ struct SessionDetailView: View {
                 SectionHeader("Synthèse de session")
                 SessionSummarySection(summary: session.summary)
 
+                SectionHeader("Cartographie posturale")
+                RiskMapView(summary: session.summary)
+                    .frame(height: 280)
+
                 SectionHeader("Résumé ISO")
                 ForEach(session.assessments.sorted(by: { $0.jointType.rawValue < $1.jointType.rawValue }), id: \.jointType) { assessment in
                     AssessmentCard(assessment: assessment)

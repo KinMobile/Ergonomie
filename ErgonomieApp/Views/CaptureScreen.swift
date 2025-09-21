@@ -4,15 +4,12 @@ import SwiftUI
 struct CaptureScreen: View {
     @EnvironmentObject private var captureViewModel: CaptureViewModel
     @EnvironmentObject private var dashboardViewModel: DashboardViewModel
+    @State private var bottomPanelHeight: CGFloat = 0
 
     var body: some View {
         ZStack {
             CameraPreviewView(session: captureViewModel.captureService.session)
                 .ignoresSafeArea()
-
-            PoseOverlayView(pose: captureViewModel.latestPose)
-                .ignoresSafeArea()
-                .allowsHitTesting(false)
 
             if captureViewModel.authorizationStatus != .authorized {
                 PermissionOverlay(status: captureViewModel.authorizationStatus)
@@ -26,7 +23,33 @@ struct CaptureScreen: View {
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
                     .padding()
+                    .background(
+                        GeometryReader { proxy in
+                            Color.clear
+                                .preference(key: BottomPanelHeightPreferenceKey.self, value: proxy.size.height)
+                        }
+                    )
             }
+        }
+        .overlay(alignment: .bottomTrailing) {
+            PoseOverlayView(pose: captureViewModel.latestPose, contentInset: 10)
+                .frame(width: 140, height: 220)
+                .padding(12)
+                .background(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(.ultraThinMaterial)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .stroke(Color.white.opacity(0.25), lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.25), radius: 12, x: 0, y: 8)
+                .padding(.trailing, 24)
+                .padding(.bottom, bottomPanelHeight + 24)
+                .allowsHitTesting(false)
+        }
+        .onPreferenceChange(BottomPanelHeightPreferenceKey.self) { height in
+            bottomPanelHeight = height
         }
         .onAppear {
             captureViewModel.configureIfNeeded()
@@ -35,6 +58,14 @@ struct CaptureScreen: View {
         .onDisappear {
             captureViewModel.stop()
         }
+    }
+}
+
+private struct BottomPanelHeightPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
     }
 }
 

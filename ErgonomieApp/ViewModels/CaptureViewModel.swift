@@ -103,8 +103,8 @@ final class CaptureViewModel: ObservableObject {
         captureService.sampleBufferPublisher
             .receive(on: DispatchQueue.global(qos: .userInitiated))
             .compactMap { CMSampleBufferGetImageBuffer($0) }
-            .flatMap { [poseEstimator] pixelBuffer in
-                poseEstimator.estimatePose(from: pixelBuffer)
+            .flatMap { [poseEstimator, captureService] pixelBuffer in
+                poseEstimator.estimatePose(from: pixelBuffer, orientation: captureService.imageOrientation)
             }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] pose in
